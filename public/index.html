@@ -1,0 +1,552 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="it">
+<head>
+<link rel="icon" type="image/vnd.microsoft.icon" href="http://zonzo.to/zonzo.ico" />
+<link rel="apple-touch-icon" href="images/touch-icon-iphone.png" />
+<link rel="apple-touch-icon" sizes="72x72" href="images/touch-icon-ipad.png" />
+<link rel="apple-touch-icon" sizes="114x114" href="images/touch-icon-iphone4.png" />
+<link rel="stylesheet" type="text/css" href="http://www.google.com/fonts#UsePlace:use/Collection:Oswald:400,300">
+<link rel="stylesheet" type="text/css" href="http://www.google.com/fonts#UsePlace:use/Collection:Noto+Sans:400,700">
+<meta name="viewport" content="initial-scale=1.0, user-scalable=no" />
+<meta name="google-site-verification" content="YenGOtG8Q-f7VVlXRtnvvBcWuTqlZce495YzDjgBNLk" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<style type="text/css">
+html,body,div,span,applet,object,iframe,h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,big,cite,code,del,dfn,em,font,img,ins,kbd,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,legend,table,caption,tbody,tfoot,thead,tr,th,td
+	{
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-weight: inherit;
+	font-style: inherit;
+	font-size: 100%;
+	font-family: Noto Sans,sans-serif;
+	text-align: left;
+	vertical-align: baseline;
+}
+
+a img,:link img,:visited img {
+	border: 0;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+ol,ul {
+	list-style: none;
+}
+
+q:before,q:after,blockquote:before,blockquote:after {
+	content: ��;
+}
+
+html {
+	height: 100%
+}
+
+body {
+	height: 100%;
+	margin: 0px;
+	padding: 0px
+}
+
+div,ul,li,p,small {
+	position: relative
+}
+
+#map_canvas {
+	height: 100%;;
+	width: 100%;
+}
+
+#map_container {
+	top:2%;
+	height: 72%;
+	position: fixed;
+	width: 100%;
+	z-index: 0;
+}
+
+#legenda{
+	position: fixed;
+	height: 2%;
+	font-size:16px;
+	width: 100%;
+	margin-left: 10px;
+}
+
+#legenda a:link, a:hover, a:visited {
+	text-decoration: underline;
+	color: inherit;
+}
+
+#legenda img{
+	width: 16px;
+	margin-bottom: -4px;
+}
+#legenda2{
+	position: fixed;
+	top:74%;
+	height: 2%;
+	font-size:16px;
+	width: 100%;
+	margin-left: 10px;
+}
+
+#timeline_container{
+	height: 24%;
+	position: fixed;
+	bottom:0;
+	width: 100%;
+	z-index: 0;
+}
+
+#placeholder{
+	position: absolute;
+	top: 2%;
+	right: 10px;
+	width: 500px;
+	height: 200px;
+	background-color: #fefefe;
+}
+
+#timeline_canvas{
+	height: 100%;
+	width: 99%;
+}
+
+.rightcol {
+	position: absolute;
+	right: 0.5em;
+	top: 1em;
+}
+
+.buscontainer {
+	list-style-type: none;
+}
+
+.buscontainer li {
+	position: relative;
+	float: right;
+	margin-top: 0.5em;
+	clear: both;
+}
+
+#bus15 p:first-child {
+	border-color: #C00;
+	color: #C00;
+}
+
+#bus61 p:first-child {
+	border-color: #C0C;
+	color: #C0C;
+}
+
+#bus3990 p:first-child {
+	border-color: #00C;
+	color: #00C;
+}
+
+#bus13 p:first-child {
+	border-color: #C08;
+	color: #C08;
+}
+
+.buscontainer li p {
+	margin-top: 0.5em;
+	color: #000;
+	text-shadow: 0px 1px 1px #fff, 0px -1px -1px #fff;
+	font-family: "Helvetica Neue", Arial, sans-serif;
+	letter-spacing: 0.1em;
+	font-size: 0.6em;
+	text-transform: uppercase;
+	font-weight: bolder;
+	width: 6em;
+	text-align: left;
+}
+
+.buscontainer li p:first-child,#info p {
+	text-align: center;
+	text-shadow: none;
+	width: 38px;
+	height: 38px;
+	line-height: 32px;
+	letter-spacing: -0.05em;
+	border: solid 3px;
+	-webkit-border-radius: 22px;
+	border-radius: 22px;
+	margin-top: 0;
+}
+
+.bar p:first-child:after {
+	content: " ";
+	width: 2.1em;
+	height: 2.1em;
+	position: absolute;
+	top: .64em;
+	border-top: solid 0.2em;
+	-webkit-transform: rotate(-45deg);
+	left: .64em;
+}
+
+.buscontainer li p h1 {
+	font-size: 2em;
+}
+
+.buscontainer li p h2 {
+	font-size: 1.2em;
+}
+
+.buscontainer li p h3 {
+	font-size: 1em;
+}
+
+.buscontainer li p h4 {
+	font-size: .7em;
+	top: -.1em;
+	letter-spacing: .1em;
+}
+
+.panel {
+	position: fixed;
+	left: 50%;
+	margin-left: -10em;
+	padding: 0.5em;
+	width: 19em;
+	background-color: #222;
+	opacity: 0.95;
+	font-size: 1em;
+	font-family: Helvetica, Arial, sans-serif;
+	text-align: center;
+	color: #fff;
+	-webkit-transition-property: bottom;
+	-webkit-transition-duration: 0.4s;
+	background: -moz-linear-gradient(19% 75% 90deg, #222, #000);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#222),
+		to(#000) );
+	-moz-border-radius: 1em;
+	-webkit-border-radius: 1em;
+	z-index: 20;
+}
+
+#options {
+	bottom: -18em;
+	height: 19em;
+}
+
+#refresh {
+	top: -2em;
+	height: 2em;
+	padding-top: 2em;
+	background: -moz-linear-gradient(75% 19% 90deg, #000, #222);
+	background: -webkit-gradient(linear, 0% 0%, 0% 100%, from(#000),
+		to(#222) );
+}
+
+.opt {
+	height: 3.5em;
+	margin-bottom: .1em;
+	overflow: hidden;
+	border-bottom: 1px solid #a0a0a0;
+}
+
+input {
+	border: none;
+	padding: 0;
+	padding-bottom: 0.25em;
+	margin-bottom: 0.5em;
+	font-size: 1.5em;
+	line-height: 1.25em;
+	width: 100%;
+	background: transparent;
+	color: #a0a0a0;
+	font-family: helvetica, sans-serif;
+	-webkit-appearance: none;
+	text-align: left;
+}
+
+label,td,input[type=button] {
+	color: #a0a0a0;
+	letter-spacing: 0.125em;
+	font-size: 0.5em;
+	padding-left: 4em;
+	margin-bottom: 0em;
+	text-transform: uppercase;
+}
+
+table {
+	width: 100%;
+	margin-top: .5em;
+	margin-bootom: .75em;
+}
+
+input[type=button] {
+	padding: 0;
+	border: 1px solid #333;
+	color: #333;
+	-webkit-border-radius: 2.5em;
+	border-radius: 2.5em;
+	width: 10.90em;
+	margin: 0;
+	height: 4.5em;
+	padding-top: .5em;
+	margin-top: .75em;
+    margin-right: 0;
+	text-align: center;
+	cursor: pointer;
+}
+
+input[type=button]:active {
+	color: #222;
+	background: #333;
+}
+
+td {
+	padding: 0;
+	padding-top: 1em;
+	margin: 0;
+	border-top: 1px solid #333;
+	color: #333;
+	width: 10%;
+	text-align: center;
+}
+
+input#address {
+	padding: 0;
+	margin: 0;
+	padding-left: 1em;
+	padding-top: 0.25em;
+	background-color: transparent;
+	background-image: url('images/marker.svg');
+	background-repeat: no-repeat;
+	background-position: 0.25em;
+}
+
+input:focus {
+	outline: none;
+	color: whitesmoke;
+}
+
+/*input:focus, textarea:focus, select:focus {outline-color:#444;  outline-width:1px;   border-bottom: 1px solid #222; }
+
+input:focus, textarea:focus, select:focus {border-bottom: 1px solid #222; }
+	 textarea {
+     height: 55px;
+     background: -webkit-gradient(linear, left top, left bottom, color-stop(0, #222), color-stop(0.05, #333));
+   }
+ */
+.iphone-slider {
+	width: 100%;
+	height: 2em;
+	/* set the wrapper as the anchor element for positioning*/
+	position: relative;
+}
+
+.iphone-slider input {
+	-webkit-appearance: none;
+	width: 95%;
+	padding-left: 2.5%;
+	padding-right: 2.5%;
+	background: trasparent;
+	margin-top: -.125em;
+}
+
+.iphone-slider input::-webkit-slider-thumb {
+	-webkit-appearance: none;
+	/* position the button on top of everything */
+	z-index: 100;
+	position: relative;
+	width: 1em;
+	height: 1em;
+	-webkit-border-radius: .5em;
+	border-radius: .5em;
+	/* arrow and button gradient */
+	background-color: #444;
+	background-repeat: no-repeat;
+	background-position: 50%;
+}
+
+.iphone-slider table { /* position the text just below the button */
+	position: absolute;
+	top: 0;
+	z-index: 99;
+}
+
+@
+-webkit-keyframes text-spotlight { 0% {
+	-webkit-mask-position: -800px;
+}
+
+100%{
+-webkit-mask-position
+:
+0px;
+ 
+
+}
+}
+#wait {
+	position: fixed;
+	top: 0;
+	bottom: 0;
+	width: 100%;
+	height: 100%;
+	background-color: #222;
+	opacity: 0.6;
+	font-size: 1.2em;
+	padding-top: 20%;
+	font-family: Arial, sans-serif;
+	text-align: center;
+	color: #fff;
+}
+
+#buu {
+ position: fixed;
+ top: 0;
+ bottom: 0;
+ width: 100%;
+ height: 100%;
+ background-color: #222;
+ opacity: 0.6;
+ font-size: 1.2em;
+ padding-top: 20%;
+ font-family: Arial, sans-serif;
+ text-align: center;
+ color: #fff;
+}
+
+#buu a{
+ color:#ccc;
+}
+
+#intermediateInfo {
+	position: fixed;
+	width: 200px;
+	height: 100px;
+	bottom: 100px;
+	background-color: #fff;
+	z-index: 15;
+	font-size: 0.5em;
+}
+
+#info span {
+	float: left;
+	clear: both;
+	width: 100%;
+}
+
+#infowindow span {
+	float: left;
+	clear: both;
+	width: 100%;
+}
+
+.info {
+	margin-top: -160px;
+	height: 160px;
+	border-left: solid 1px #000;
+	position: absolute;
+	left: 300px;
+	top: 300px;
+}
+
+.info div {
+	position: absolute;
+	width: 160px;
+	color: #000;
+	text-shadow: 0px 1px 1px #fff, 0px -1px -1px #fff;
+	font-family: 'Helvetica Neue', Arial, sans-serif;
+	letter-spacing: 0.1em;
+	font-size: 0.6em;
+	font-weight: bolder;
+}
+
+.topleft div {
+	top: 0;
+	float: left;
+	left: 4px;
+}
+
+.topright div {
+	top: 0;
+	float: right;
+	left: -164px;
+}
+
+.bottomleft div {
+	bottom: 0;
+	float: left;
+	left: 4px;
+}
+
+.bottomright div {
+	bottom: 0;
+	float: right;
+	left: -164px;
+}
+
+.topleft span,.bottomleft span {
+	text-align: left;
+}
+
+.topright span,.bottomright span {
+	text-align: right;
+}
+
+.bottomleft,.bottomright {
+	margin-top: 0px;
+}
+</style>
+<script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=true"></script>
+<!-- 
+<script type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.5.1/jquery.min.js"></script>
+<script type="text/javascript" src="http://code.jquery.com/mobile/1.0a3/jquery.mobile-1.0a3.min.js"></script>
+<script type="text/javascript" src="js/zepto.min.js"></script>
+<script type="text/javascript" src="js/TODParallelLines2.js"> </script>
+-->
+<script language="javascript" type="text/javascript" src="http://code.jquery.com/jquery-2.0.3.min.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.time.js"></script>
+<script language="javascript" type="text/javascript" src="js/jquery.flot.selection.js"></script>
+
+<script language="javascript" type="text/javascript" src="http://jawj.github.com/OverlappingMarkerSpiderfier/bin/oms.min.js"></script>
+<script type="text/javascript" src="js/markerclusterer_compiled.js"> </script>
+<script type="text/javascript" src="js/bus2.js"> </script>
+</head>
+<body>
+ <div id="legenda">
+ 	 <b>Dashboard of <a href="http://www.westminster.gov.uk/report/" target="_blank">reports submitted by citizens</a> in Westminster </b>
+ 	 <span> --- </span>
+ 	 <img src="imgs/pie_chart_24.png" /> <span>Clustered reports (click to drill down) </span> <span>&nbsp;-&nbsp;</span>
+ 	 <img src="imgs/letter_g.png" /> <span>Graffiti</span> <span>&nbsp;-&nbsp;</span> 
+	 <img src="imgs/letter_f.png" /> <span>Dog/Human fouling</span> <span>&nbsp;-&nbsp;</span>
+	 <img src="imgs/letter_u.png" /> <span>Urine</span> <span>&nbsp;-&nbsp;</span>
+	 <img src="imgs/letter_v.png" /> <span>Vomit</span>  <span>&nbsp;-&nbsp;</span>
+	 <img src="imgs/letter_b.png" /> <span>Blood</span>  
+	 
+</div>
+ <div id="map_container">
+  	<div id="map_canvas"></div>
+ </div>
+ <div id="legenda2">
+ 	Aggregate sum of reports over the last year on daily basis (vertical gray lines are weekends): <span style="color:#ccc"> Select a range to focus on a time frame</span>
+ </div>
+ <div id="timeline_container">
+ 	<div id="timeline_canvas"></div>
+ </div>
+<div id="placeholder"></div>
+
+ 
+ 
+ <div id="wait">One moment...</div>
+ <div class="info" id="info"></div>
+ <div id="intermediateInfo"></div>
+ <div id="buu">Oooops...<br/>
+ There are some problem with your browser, please try another one <br/>
+ <br/>
+ <a href="/#prototipo">chiudi</a>
+ </div> 
+</body>
+</html>
